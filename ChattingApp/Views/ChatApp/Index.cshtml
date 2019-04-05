@@ -1,0 +1,119 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Chat Application ";
+}
+
+
+<div class="topSpacePanel" ng-app="demoChatModule">
+    <div class="panel panel-default" ng-controller="chatAppController">
+        <div class="panel-heading text-center"><h4>Chat Application</h4></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <span>Chat to {{GetTargetFullName}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="vertical-menu" ng-repeat="lname in userNameList">
+                        <div>
+                            <a style="cursor:pointer;" ng-model="userNameModel" ng-click="GetUserNameClick(lname.userName,lname.fullName,lname.userId)">{{lname.fullName}}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" ng-if="clickOnLink == true">
+                    <input type="text" id="txtMessageInput" ng-model="MessageInput" style="width:100%;" class="form-control" />
+                    <br />
+                    <div class="col-md-6">
+                        <ul id="messagesList">
+                            <li ng-repeat="mes in receiveMesList">{{mes.message}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-1" ng-if="clickOnLink == true">
+                    <input type="button" value="Send" ng-disabled="btnSendMessage" ng-click="onSendBtnClick()" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        var app = angular.module('demoChatModule', []);
+        app.controller('chatAppController', function ($scope, ChatAppService) {
+
+            $scope.userNameList = [];
+            $scope.receiveMesList = [];
+            $scope.clickOnLink = false;
+            GetUserNameLoad();
+
+            $scope.GetTargetUserName = "";
+            $scope.GetTargetFullName = "";
+
+            function GetUserNameLoad() {
+                ChatAppService.GetUserData().then(function (userDetail) {
+                    if (userDetail.data != null) {
+                        $scope.userNameList = userDetail.data;
+                    }
+                });
+            }
+            function GetReceiverMessage(clickedUser) {
+                ChatAppService.ReceiveUserMes(clickedUser).then(function (mesDetails) {
+                    if (mesDetails.data != null) {
+                        $scope.receiveMesList = mesDetails.data;
+                    }
+                });
+            }
+
+            var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+            $scope.btnSendMessage = true;
+
+           connection.start().then(function () {
+                $scope.btnSendMessage = false;
+            }).catch(function (err) {
+                return console.error(err.toString());
+             });
+
+            connection.on("ReceiveUserMessage", function (message, senderUser) {
+                var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                var encodedMsg = senderUser.fullName + " says " + msg;
+                var li = $("<li></li>").text(encodedMsg);
+                $("#messagesList").append(li);
+                $("#txtMessageInput").val('');
+
+            });
+
+            $scope.onSendBtnClick = function () {
+                var getLoginUser = '@Context.Session.GetString("UserName")';
+                var getMessage = $("#txtMessageInput").val();
+                  connection.invoke("DirectMessage", getMessage, $scope.GetTargetUserName, getLoginUser).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            }
+
+            $scope.GetUserNameClick = function (getClickedUserName, getFullName,getClickUserId) {
+                $scope.GetTargetUserName = getClickedUserName;
+                $scope.GetTargetFullName = getFullName;
+                $scope.clickOnLink = true;
+                $('#messagesList li').remove();
+                GetReceiverMessage(getClickUserId);
+                $("#txtMessageInput").val('');
+            }
+
+        });
+
+        app.service('ChatAppService', function ($http) {
+            this.GetUserData = function () {
+                var request = $http.get("/ChatApp/GetUserList");
+                return request;
+            }
+
+            this.ReceiveUserMes = function (receiverUserId) {
+                var request = $http.get("/ChatApp/GetUserMessages?userClickId=" + receiverUserId);
+                return request;
+            }
+        });
+    </script>
+}
