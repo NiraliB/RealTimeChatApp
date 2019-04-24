@@ -1,4 +1,5 @@
-﻿using ChattingApp.Data;
+﻿using ChattingApp.ChatService;
+using ChattingApp.Data;
 using ChattingApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +12,19 @@ namespace ChattingApp.Controllers
 {
     public class ChatAppController : Controller
     {
-        private readonly ChatApplicationContext dbContext;
+        private readonly ChatApplicationContext _context;
+        private readonly IChatInterface _Ichat;
 
-        public ChatAppController(ChatApplicationContext _context)
+        public ChatAppController(IChatInterface newInterface, ChatApplicationContext newDb)
         {
-            dbContext = _context;
+            _Ichat = newInterface;
+            _context = newDb;
         }
+
+        //public ChatAppController(ChatApplicationContext _context)
+        //{
+        //    dbContext = _context;
+        //}
 
         public IActionResult Index()
         {
@@ -36,10 +44,9 @@ namespace ChattingApp.Controllers
         {
             try
             {
-                List<UserDetails> lstUser = new List<UserDetails>();
                 string sessionUserName = HttpContext.Session.GetString("UserName");
-                lstUser = dbContext.UserDetails.Where(u => u.UserName != sessionUserName).ToList();
-                return lstUser;
+                var getUserlst = _Ichat.GetChatUserList(sessionUserName);
+                return getUserlst;
             }
             catch (Exception ex)
             {
@@ -53,25 +60,9 @@ namespace ChattingApp.Controllers
             try
             {
                 List<MessageDetails> lstReceiverMes = new List<MessageDetails>();
-                List<MessageDetails> lstSenderMes = new List<MessageDetails>();
                 string loginUserId = HttpContext.Session.GetString("UserId"); // Login Username
-
-                lstReceiverMes = dbContext.MessageDetails.Where(
-                   m => (m.SenderUserId == Convert.ToInt32(loginUserId) &&
-                         m.ReceiverUserId == Convert.ToInt32(userClickId)) ||
-                        (m.ReceiverUserId == Convert.ToInt32(loginUserId) &&
-                        m.SenderUserId == Convert.ToInt32(userClickId))
-                   ).ToList();
-
-                if (lstReceiverMes.Count > 0 && lstReceiverMes != null)
-                {
-                    return lstReceiverMes;
-                }
-                else
-                {
-                    return new List<MessageDetails>();
-                }
-
+                lstReceiverMes = _Ichat.GetUserMessagesDisp(userClickId,loginUserId);
+                return lstReceiverMes;
             }
             catch (Exception ex)
             {

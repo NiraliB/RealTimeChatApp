@@ -45,7 +45,9 @@
             alert("There is a Problem, Try Again!");
           },
           success: function (result) {
-            if (result.status == true) {
+              debugger;
+              if (result.status == true) {
+                  debugger;
               window.location.href = '@Url.Action("Index", "ChatApp")';
             }
             else {

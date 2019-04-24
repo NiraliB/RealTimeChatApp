@@ -31,7 +31,6 @@ namespace ChattingApp
                 {
                     var logger = service.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occured creating the Db");
-
                 }
             }
             host.Run();

@@ -47,7 +47,13 @@ namespace ChattingApp.Hubs
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
-
        
+        public override async Task OnConnectedAsync()
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "ReceiveUserMessage");
+            await base.OnConnectedAsync();
+        }
+
+
     }
 }

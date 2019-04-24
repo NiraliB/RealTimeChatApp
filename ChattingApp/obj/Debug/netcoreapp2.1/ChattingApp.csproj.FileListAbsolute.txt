@@ -15,8 +15,8 @@ C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreap
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\ChattingApp.TagHelpers.output.cache
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\ChattingApp.RazorCoreGenerate.cache
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\Account\Login.g.cshtml.cs
+C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\ChatApp\Home\Index.g.cshtml.cs
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\ChatApp\Index.g.cshtml.cs
-C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\Home\Index.g.cshtml.cs
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Error.g.cshtml.cs
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_CookieConsentPartial.g.cshtml.cs
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_Layout.g.cshtml.cs
@@ -29,4 +29,3 @@ C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreap
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\ChattingApp.dll
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\ChattingApp.pdb
 C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\ChattingApp.csproj.CopyComplete
-C:\Nirali\Projects\SampleApp_SignalR\ChattingApp\ChattingApp\obj\Debug\netcoreapp2.1\Razor\Views\ChatRoom\SignalRChat.g.cshtml.cs

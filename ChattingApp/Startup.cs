@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ChattingApp.ChatService;
 using ChattingApp.Data;
 using ChattingApp.Hubs;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +45,10 @@ namespace ChattingApp
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //services.AddSingleton<IChatInterface, ChattingService>();
+            //services.AddTransient<IChatInterface, ChattingService>();
+
             services.AddDbContext<ChatApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ChatApplicationContext")));
 
